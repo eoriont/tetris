@@ -42,30 +42,34 @@ var blockTypes = [
     new Point(1, 1),
   ],
 ];
-  
+
 var blockTypeColors = [
-  "#3dffff", 
+  "#3dffff",
   "#8b43f9",
   "#ffb13d",
   "#e8f43f",
   "#3d67ff",
   "#6af943",
-  "#ff3a3a"
+  "#ff3a3a",
+  "#ffffff"
 ]
 
-var blocksWidth = 15;
-var blockSize;
+var blocksWidth = 10;
+var blockSize = 40;
+var blocksHeight = 20
 
 var blocks = [];
 
+var ifDebug = false;
+
 class Block {
-  constructor(x, y, type, id) {
-    this.x = x;
-    this.y = y;
+  constructor(pos, type, id) {
+    this.x = pos.x;
+    this.y = pos.y;
     this.type = type;
     this.id = id;
 
-    this.blocks = blockTypes[type];
+    this.blocks = blockTypes[type].slice(0);
     this.down = false;
 
     this.color = blockTypeColors[type];
@@ -78,9 +82,12 @@ class Block {
   }
 
   render() {
-    fill(this.color);
+
     for (let block of this.blocks) {
-      rect((this.x+block.x)*blockSize, (this.y+block.y)*blockSize, blockSize, blockSize);
+      let x = (this.x+block.x)*blockSize;
+      let y = (this.y+block.y)*blockSize;
+      fill(this.color);
+      rect(x, y, blockSize, blockSize);
     }
   }
 
@@ -109,11 +116,10 @@ class Block {
             return false;
           }
         }
-        if (blockPos.y > blocksWidth-1) {
+        if (blockPos.y > blocksHeight-1) {
           return false;
         }
         if (blockPos.x > blocksWidth-1 || blockPos.x < 0) {
-          console.log("test1", blockPos.x)
           return false;
         }
       }
